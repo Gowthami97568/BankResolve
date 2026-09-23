@@ -180,7 +180,8 @@ BankResolve
 ## Clone Repository
 
 ```bash
-git clone https://github.com/Naveen-Ponnuru/BankResolve.git
+https://github.com/Gowthami97568/BankResolve.git
+
 ```
 
 ---
@@ -287,7 +288,7 @@ http://localhost:5173
 
 # 👨‍💻 Developed By
 
-**Ponnuru Venkata Naveen**
+**Gowthami Sanaka**
 
 - Java Full Stack Developer
 - Spring Boot | React | MySQL | REST APIs | JWT | WebSocket
