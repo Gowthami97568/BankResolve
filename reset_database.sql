@@ -1,0 +1,9 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE TABLE contacts;
+TRUNCATE TABLE grievance_history;
+TRUNCATE TABLE grievances;
+TRUNCATE TABLE notifications;
+TRUNCATE TABLE users;
+
+SET FOREIGN_KEY_CHECKS = 1;

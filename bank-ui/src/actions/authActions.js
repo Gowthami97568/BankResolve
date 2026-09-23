@@ -1,0 +1,75 @@
+import authService from "../services/authService";
+
+/**
+ * React Router Action for Login
+ */
+export async function loginAction({ request }) {
+    const data = await request.formData();
+    const loginData = {
+        email: data.get("email"),
+        password: data.get("password"),
+    };
+
+    const errors = {};
+    if (!loginData.email) errors.email = "Email is required";
+    if (!loginData.password) errors.password = "Password is required";
+
+    if (Object.keys(errors).length > 0) {
+        return { success: false, errors };
+    }
+
+    try {
+        const response = await authService.login(
+            loginData.email,
+            loginData.password
+        );
+        const { user, jwtToken } = response;
+        return { success: true, user, jwtToken };
+    } catch (error) {
+        console.error("Login attempt failed:", error?.response?.data || error?.message);
+        return {
+            success: false,
+            errors: { message: "Invalid email or password." },
+        };
+    }
+}
+
+/**
+ * React Router Action for Registration
+ */
+export async function registerAction({ request }) {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+
+    const errors = {};
+    // UI field name is "name"
+    if (!data.name) errors.name = "Full name is required";
+    if (!data.email) errors.email = "Email is required";
+    if (!data.password) errors.password = "Password is required";
+
+    const role = data.role || "CUSTOMER";
+
+    if (Object.keys(errors).length > 0) {
+        return { success: false, errors };
+    }
+
+    try {
+        // Backend expects: { name, email, password, mobileNumber, role }
+        const registrationPayload = {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            mobileNumber: data.phone, // UI sends 'phone', backend expects 'mobileNumber'
+            role: role
+        };
+
+        const response = await authService.register(registrationPayload);
+        return { success: true, user: response?.user || null };
+    } catch (error) {
+        return {
+            success: false,
+            errors: { message: error.response?.data?.message || "Registration failed." },
+        };
+    }
+}
+
